@@ -1,8 +1,10 @@
 //The URIs of the REST endpoint
-Upload_Image = "https://prod-208.westeurope.logic.azure.com:443/workflows/15188eec45fe40d6bfefa43f08a8a8df/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=9-3_hXKCBZNrVSQyqVl4avqR9XIruUq32cSAbbgyqbk";
+Upload_Post = "https://prod-208.westeurope.logic.azure.com:443/workflows/15188eec45fe40d6bfefa43f08a8a8df/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=9-3_hXKCBZNrVSQyqVl4avqR9XIruUq32cSAbbgyqbk";
 All_Posts = "https://prod-65.westeurope.logic.azure.com:443/workflows/80f29d869bff42ca9ef86d89a315f4d9/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=D6201RvlbZuna7tAlwM07DtV9xdPiS6opX_KnFFHfxY";
 Delete_Part1 = "https://prod-06.westeurope.logic.azure.com/workflows/576d6b6fc1e141bdb59b5915b3165ab0/triggers/manual/paths/invoke/api/v1/post/"
 Delete_Part2 = "?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=EEOrPz4mRa-TyuCs-uvZLP56fJSKMRx_IB5ojfgCn-U"
+Update_Part1 = "https://prod-232.westeurope.logic.azure.com/workflows/cecd46da4cf04a308d8ae826c5d7dfe1/triggers/manual/paths/invoke/api/v1/"
+Update_Part2 = "?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=evCprruclzBZhGhDUIfhvUkUzdOaQ803DObQvHmIawM"
 
 BLOB_ACCOUNT = "https://blobstoragecom682emcl.blob.core.windows.net"
 
@@ -32,6 +34,13 @@ $(document).ready(function() {
     deletePost();
 
   });
+
+  $("#imagedelete").click(function(){
+
+    //Execute the submit new asset function
+    updatePost();
+
+  });
 });
 //A function to submit a new asset to the REST endpoint 
 function submitPost(){
@@ -48,7 +57,7 @@ function submitPost(){
   
    //Post the form data to the endpoint, note the need to set the content type header
     $.ajax({
-      url: Upload_Image,
+      url: Upload_Post,
       data: postData,
       cache: false,
       enctype: 'multipart/form-data',
@@ -107,6 +116,16 @@ function deletePost(id){
   $.ajax({
     type: "DELETE",
     url: Delete_Part1 + id + Delete_Part2,
+  }).done(function( msg ) {
+    getImages();
+  });
+}
+
+// Update Functions
+function updatePost(id){
+  $.ajax({
+    type: "PUT",
+    url: Update_Part1 + id + Update_Part2,
   }).done(function( msg ) {
     getImages();
   });
